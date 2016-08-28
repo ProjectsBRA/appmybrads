@@ -1,0 +1,182 @@
+<ion-view title="Procure & Negocie">
+    <ion-content class="padding" ng-controller="FindCtrl">
+        <ks-swiper-container initial-slide="0" speed="1000" loop="false" show-nav-buttons="false" slides-per-view="3" space-between="5" pagination-clickable="true" override-parameters="{effect: 'coverflow',coverflow: {rotate: 0,stretch: 0,depth: 0,modifier: 1,slideShadows : false}}">
+            <ks-swiper-slide class="swiper-slide" ng-repeat="categoria in categories | orderBy:'name'" active-slide="slideAtual">
+                <div>
+                    <a href="#" ng-click="mudarcategoria(categoria.name, $index)">
+                        <img ng-class=" $index  ==  slideAtual ? 'img-50' :  'img-50-opaco'"   class="img-50-opaco" ng-src="{{categoria.photo}}">
+                        <p  class="p-50">{{categoria.name}}</p>
+                    </a>
+                </div>
+            </ks-swiper-slide>
+        </ks-swiper-container>
+
+
+        <!--
+            <div class="row" ng-show="load" style="text-align:center;">
+              <div class="col col-33 col-offset-33">
+                <li class="ion-loading-c" data-pack="default" data-tags="spinner, waiting, refresh, animation" data-animation="true"></li>
+              </div>
+            </div>
+        -->
+
+
+
+        <!--
+            <tab-slide-box tab="1" >
+              <div class="tsb-icons">
+                <div class="tsb-ic-wrp">
+                  <ion-scroll direction="x" class="tsb-hscroll"  delegate-handle="slide1Scroll">
+                      <a href="javascript:;" ng-repeat="categoria in categories" on-finish-render="test()">
+                        <img class="img-50" ng-src="{{categoria.photo}}">
+                      </a>
+                  </ion-scroll>
+                </div>
+              </div>
+              <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+                <ion-slide ng-repeat="categoria in categories">
+                  <p class="p-50">{{categoria.name}}</p>
+                </ion-slide>
+              </ion-slide-box>
+            </tab-slide-box>
+        -->
+
+
+        <ion-nav-buttons side="right">
+            <a class="button buttons-right button-icon ion-android-more" style="font-size: 26px;" ng-click="openPopover($event)"></a>
+            <script id="templates/popover.html" type="text/ng-template">
+                <ion-popover-view class="fit">
+                    <ion-content>
+                        <div class="list" ng-click="closePopover()">
+                            <a class="item icon ion-refresh" ng-click="atualizarClassificados()">
+                                Atualiza Classificados
+                            </a>
+                            <a class="item icon ion-images" ng-click="filtrarClassificados(categoria)">
+                                Filtrar Classificados
+                            </a>
+                            <a class="item icon ion-close" ng-click="">
+                                Cancelar
+                            </a>
+                        </div>
+                    </ion-content>
+                </ion-popover-view>
+            </script>
+        </ion-nav-buttons>
+
+        <div>
+            <div class="row" style="margin-bottom:0px;">
+                <div class="col col-90 col-offset-0">
+                    <label class="item item-input">
+                        <input type="text" placeholder="Oque você gostaria de procurar?" ng-model="item.name">
+                    </label>
+                </div>
+                <div class="row" style="margin-bottom:0px; margin-right: 20px">
+                    <button  class="btn-search icon-left ion-search" background="white" ng-click="submit()"></button>
+                </div>
+            </div>
+        </div>
+
+        <!--
+      <div class="list">
+
+
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Oque você gostaria de procurar?" ng-model="item.name">
+        </label>
+
+
+
+               <label class="item item-input item-select">
+              <div class="input-label">
+                Área
+              </div>
+              <select ng-model="item.selectedArea">
+                  <option selected></option>
+                <option ng-repeat="area in areas">{{area.name}}</option>
+              </select>
+        </label>
+
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Categoria
+          </div>
+          <select ng-model="item.selectedCategory">
+            <option selected></option>
+            <option ng-repeat="category in categories">{{category.name}}</option>
+          </select>
+        </label>
+
+
+
+      </div>
+        -->
+
+
+
+
+        <div >
+            <ion-list class="list">
+
+                <ion-item ng-show="visible" text-align="center"> {{items.length+' Ofertas' || 'No Ofertas' }} </ion-item>
+
+                <ion-item class="item item-thumbnail-left complex-item" ng-repeat="object in items" href="#/tab/item/{{object._id}}" >
+                    <img ng-src="{{object.photo}}">
+                    <h2>{{object.name}}</h2>
+                    <p>{{object.description}}</p>
+                    <p>
+                        {{object.dt_create | date:'mediumDate'}}
+        <span ng-class="object.classificado ==  true ? 'badge badge-royal' :  'badge badge-grey'" style="position:inherit;float:right;" id="number-default">{{object.price | currency}}
+        </span>
+                    </p>
+                </ion-item>
+            </ion-list>
+
+        </div>
+    </ion-content>
+</ion-view>
+
+<!-- MODAL -->
+<script id="filtroSubCategoria.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-royal">
+            <h1 class="title">Categoria: {{categoria}}</h1>
+            <button class="button button-royal" ng-click="closeModal()">
+                <i class="icon ion-close" ></i>
+            </button>
+        </ion-header-bar>
+        <ion-content>
+
+            <label class="item item-input">
+                <i class="icon ion-ios-color-filter placeholder-icon"></i>
+                <input type="text" placeholder="Informe a SubCategoria" ng-model="subCategoria.name">
+            </label>
+
+
+            <input type="text" ng-model="subcategoriaFilter" />
+
+            <table>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>Label</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tr ng-repeat="sub in subCategoria  | filter:subcategoriaFilter"
+                    selection-model
+                    selection-model-type="checkbox"
+                    selection-model-mode="multiple-additive"
+                    selection-model-selected-class="foobar">
+                    <td><input type="checkbox"></td>
+                    <td>{{$index + 1}}</td>
+                    <td>{{sub.name}}</td>
+                </tr>
+            </table>
+
+
+        </ion-content>
+    </ion-modal-view>
+</script>

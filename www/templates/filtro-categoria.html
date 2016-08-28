@@ -1,0 +1,28 @@
+  <ion-modal-view ng-controller="FiltroCtrl">
+      <ion-header-bar class="bar bar-interno">
+          <h1 class="title">Seleção Categoria</h1>
+      </ion-header-bar>
+    <ion-content>
+
+      <div class="list card">
+          <h5 href="#" ng-click="limparCategoria()">Remover seleção</h5>
+          <ion-item class="itemList" ng-repeat="category in ::categories" ng-click="itemFiltroCategoria({{category}})">
+              <p>{{category.name}}</p>
+          </ion-item>  
+      </div>
+    </ion-content>
+
+    <ion-footer-bar class="bar bar-footer" keyboard-attach="true">
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-checkmark"
+               ng-click="selecionaCategoria()">Selecionar</a>
+            </a>
+        </div>
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-ios-close-outline"
+               ng-click="closeModal(2)">Cancelar</a>
+            </a>
+        </div>
+
+    </ion-footer-bar>
+  </ion-modal-view>

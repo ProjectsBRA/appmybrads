@@ -1,0 +1,25 @@
+<ion-view title="Meus Anúncios">
+  <ion-nav-buttons ng-controller="AnunciosCtrl">
+    <button class="button-header back-button buttons button-clear header-item" ng-click="goBack()">
+      <i class="icon ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content has-header="true" padding="true">
+    <div class="list card" ng-if="anuncios.length>0" ng-repeat="anuncio in anuncios | orderBy:'dt_create'">  
+      <div class="item">
+            <a>
+                <div class="a10 item-avatar" ng-click="selecionarAnuncio(anuncio)">
+                   <img ng-if="photoExiste(anuncio)" src="{{anuncio.photo1}}">
+                   <img ng-if="photoExiste(anuncio)==false" ng-src="img/foto-naodisponivel.jpg"/>
+                <p class="a-headermensagem" href="#">{{anuncio.name}}</p>
+                      <span class="date">{{anuncio.dt_create | date:"dd/MM/yyyy HH:mm"}}</span>
+                </div>
+            </a>
+     </div>
+   </div>
+    <div ng-if="anuncios.length==0"><h4>Não há anúncios</h4>
+   </div>
+
+
+    </ion-content>
+</ion-view>

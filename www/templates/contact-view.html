@@ -1,0 +1,22 @@
+<ion-view>
+  <ion-content has-header="true" padding="true">
+    <div class="list card">
+      <h2>Ligar Anunciante</h2>
+      <p>{{item.nome_user}}</p>
+      <div>
+        <label class="item-contato item-input item-select">
+          <select name="codigo" ng-model="operadora.nome"
+                  ng-options="operadora.codigo as operadora.nome for operadora in operadoras">
+            <option value="">-Alterar operadora-</option>
+          </select>
+          <div class="input-label">
+            {{item.telephone}}
+          </div>
+
+        </label>
+      </div>
+      <p>{{item.address}}</p>
+    </div>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,122 @@
+.gallery .images
+{
+    height: 0;
+    padding-bottom: 60%;
+    position: relative;
+    width: 100%;
+}
+.gallery .images>div,.gallery .images>span
+{
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.gallery .images>div
+{
+    background: center no-repeat;
+    background-size: cover;
+    border-radius: 3px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,.4);
+    opacity: 0;
+    transition: all .88s ease;
+    webkit-transition: all .88s ease;
+}
+.gallery .images>div.active
+{
+    opacity: 1;
+}
+.gallery .images>span
+{
+    color: #fff;
+    cursor: pointer;
+    font-size: 50px;
+    height: 100%;
+    line-height: 44px;
+    text-shadow: 0 0 5px #000;
+    width: 25px;
+}
+.gallery .images>span.right
+{
+    left: 95%;
+    margin-left: -20px;
+}
+.gallery .images>span.left
+{
+    padding-left: 0px;
+}
+.gallery .images>span:before
+{
+    bottom: 0;
+    margin-left: -10px;
+    margin-top: -25px;
+    position: absolute;
+    top: 50%;
+}
+.gallery .images>span.left:before
+{
+    content: "\00AB";
+}
+.gallery .images>span.right:before
+{
+    content: "\00BB";
+}
+.gallery .thumbs
+{
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+.gallery .thumbs>div
+{
+    background: center no-repeat;
+    background-size: cover;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    height: 100px;
+    margin: 4px;
+    position: relative;
+    transition: all .88s ease;
+    webkit-transition: all .88s ease;
+    width: 100px;
+}
+@media (max-width:768px)
+{
+    .gallery .thumbs>div
+    {
+        height: 65px;
+        width: 65px;
+    }
+}
+.gallery .thumbs>div:before
+{
+    border: solid transparent;
+    border-width: 0 5px 5px;
+    content: '';
+    height: 0;
+    left: 45px;
+    position: absolute;
+    top: -8px;
+    transition: all .88s ease;
+    webkit-transition: all .88s ease;
+    width: 0;
+}
+@media (max-width:768px)
+{
+    .gallery .thumbs>div:before
+    {
+        left: 25px;
+    }
+}
+.gallery .thumbs>div.active
+{
+    border-color: silver;
+}
+.gallery .thumbs>div.active:before
+{
+    border-bottom-color: silver;
+}

@@ -1,0 +1,207 @@
+<ion-view title="{{item.name}}">
+	<ion-nav-buttons class="header-interno">
+		<button class="button-header back-button buttons button-clear header-item header-interno" ng-click="goBack()">
+			<i class="icon ion-arrow-left-c"></i>
+		</button>
+	</ion-nav-buttons>
+	<ion-content has-header="true" padding="true">
+	  <div class="list card">
+		  <div class="icon-wrapper" ng-if="item.classificado ==  true">
+			  <i class="fa ion-star custom-icon-view">
+				  <span class="fix-editor">&nbsp;</span>
+			  </i>
+		  </div>
+
+		  <div class="item">
+ 		    <h3  ng-class="badge-light"  id="number-default" ng-if="item.price>0">{{item.price | currency:"$"}}</h3>
+ 		    <h3  ng-class="badge-light"  id="number-default" ng-if="item.price==0">A combinar</h3>
+		    <p class="item-small">Publicado em {{item.dt_create | date:'mediumDate'}}</p>
+		  </div>
+
+		  <div class="item item-body">
+
+			  <ion-slide-box style="width:300px;height:300px;margin:auto;display:block">
+				  <ion-slide "width:100%;height:90%">
+					  <img ng-if="photoExiste(item)==false" src="img/foto-naodisponivel.jpg" style="width:300px;height:300px;margin:auto;display:block" >
+					  <img ng-if="photoExiste(item)" src="{{item.photo1}}" style="width:300px;height:300px;margin:auto;display:block" >
+				  </ion-slide>
+				  <ion-slide ng-if="item.photo2!=='null'" "width:100%;height:90%">
+					  <img src="{{item.photo2}}" style="width:300px;height:300px;margin:auto;display:block" >
+				  </ion-slide>
+				  <ion-slide ng-if="item.photo3!=='null'" "width:100%;height:90%">
+					  <img src="{{item.photo3}}" style="width:300px;height:300px;margin:auto;display:block" >
+				  </ion-slide>
+
+
+<!-- 				  <ion-slide ng-repeat="image in photos" "width:100%;height:90%">
+					  <img src="{{image.photo}}" style="width:300px;height:300px;margin:auto;display:block" >
+				  </ion-slide>
+ -->			  </ion-slide-box>
+
+<!--
+		    <img class="full-image" ng-src="{{item.photo}}">
+		    <img class="full-image" ng-show="item.photo2 ==  true" ng-src="{{item.photo2}}">
+			<img class="full-image" ng-show="item.photo3 ==  true" ng-src="{{item.photo3}}">
+-->
+
+		  </div>
+
+   	  </div>
+
+	  <div class="list card">
+	    <div class="item">
+		    <h2 class="item-bold">Descrição Anúncio</h2>
+		    <textarea readonly>{{item.description}}</textarea>
+	    </div>
+	  </div>
+
+	 <div class="list card">
+	  <div class="item item-body">
+		  <h2 class="item-bold">Outras Informações</h2>
+		  <p>Categoria: {{item.categoryName}}</p>
+		  <p>SubCategoria: {{item.subcategoryName}}</p>
+	  </div>
+	 </div>
+
+	 <div class="list card">
+	  <div class="item item-body">
+		  <h2 class="item-bold">Localização Anúncio</h2>
+		  <p>Estado: {{item.estado}}</p>
+		  <p>Cidade: {{item.cidade}}</p>
+	  </div>
+	 </div>
+
+<!--
+
+	 <div class="list footer">
+		 <div class="item-tabs tabs tabs-secondary tabs-icon-left" style="background-color: #6A5ACD;width:100%">
+			 <a class="tab-item icon ion-chatboxes" href="#/app/item/{{item._id}}/message" style="color:white;opacity:1.0;font-size:16px">
+				 Mensagem
+			 </a>
+			 <a class="tab-item icon ion-ios-telephone"
+    		        ng-href="tel:{{item.telephone}}"
+				    ng-if="item.telephone"
+				    style="color:white;opacity:1.0; width:100%;font-size:16px">
+				 Ligue-me
+			 </a>
+			 <a class="tab-item icon ion-ios-telephone" ng-click="dialNumber(item.telephone)" ng-if="item.telephone">
+				 Call {{item.telephone}} with Prompt
+			 </a>
+		 </div>
+	 </div>
+-->
+  </ion-content>
+	<ion-footer-bar class="bar bar-footer">
+		<div class="button-bar">
+			<a class="a-50 button button-green icon-left ion-chatboxes"
+			   ng-click="openMensagem()">
+				Mensagem
+			</a>
+			<a class="a-50 button button-green icon-left ion-ios-telephone"
+				ng-click="dialNumber(item.telephone)">
+				Ligue-me
+			</a>
+		</div>
+	</ion-footer-bar>
+
+</ion-view>
+
+<!-- MODAL -->
+<script id="templates/mylongform.html" type="text/ng-template">
+	<ion-modal-view class="product edit create">
+		<form name="itemEdit" novalidate>
+			<ion-header-bar class="bar-positive fix-buttons">
+				<a class="button" ng-click="closeModal()">Cancel</a>
+				<h1 class="title">Form</h1>
+			</ion-header-bar>
+			<ion-content has-bouncing="true">
+				<div class="row" ng-class="{'no-padding-top': !data.editItem}">
+					<div class="col">
+						<label class="item item-input large">
+							<input type="text" placeholder="Title">
+						</label>
+					</div>
+				</div>
+				<div class="editable-image horizontal-image">
+					<div class="add"><i class="icon ion-upload"></i>
+						<div class="instructions">Tap to upload photo</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<label class="item item-input large">
+							<input type="text" placeholder="Price">
+						</label>
+					</div>
+				</div>
+				<div class="row description-row">
+					<div class="col">
+						<label class="item item-input text">
+							<textarea placeholder="Description" rows="5" ng-model="item.description" ng-Required="true" name="description" lose-focus-on-return></textarea>
+						</label>
+					</div>
+				</div>
+
+				<div class="row charity-row">
+					<div class="col col-10 vert-center">
+						<div class="charity large"></div>
+					</div>
+				</div>
+
+
+			</ion-content>
+		</form>
+	</ion-modal-view>
+</script>
+
+
+<script id="templates/listaUsuarios.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar bar-header color:'rgb(47,153,214)'">
+            <h1 class="title">Usuários & Mensagens</h1>
+          <div class="button button-clear" ng-click="closeModal()"><span class="icon ion-ios-close-outline"></span></div>
+      </ion-header-bar>
+
+      <ion-content>
+        <div class="list card">
+          <div class="item" ng-repeat="usuario in ::usuarios">
+            <p ng-model=usuario.usuario_send ng-click="selecionarUsuario(usuario.usuario)">{{usuario.nome_usuario}}</p>
+          </div>
+        </div>
+      </ion-content>
+    </ion-modal-view>
+</script>
+
+
+<script id="templates/contato.html" type="text/ng-template">
+	<ion-modal-view>
+		<ion-header-bar class="bar bar-royalslateblue">
+			<h1 class="title">Dúvida/Respostas</h1>
+			<button class="button" style="background-color: #483D8B" ng-click="closeModal()">
+				<i class="icon ion-close" ></i>
+			</button>
+		</ion-header-bar>
+		<ion-content>
+			<div>
+				<label class="item item-input">
+					<i class="icon ion-email placeholder-icon"></i>
+					<input type="email" placeholder="Email pessoal" ng-model="contact.email">
+				</label>
+				<label class="item item-input">
+		    <textarea placeholder="Mensagem de texto aqui" style="min-height:200px;resize: none;" ng-model="contact.text"
+					></textarea>
+				</label>
+				<div class="row">
+					<div class = "col-90 col-offset-10">
+						<div class="item tabs tabs-secondary tabs-icon-left" style="background-color: #6A5ACD;width:90%">
+							<a class="tab-item" ng-click="contact(item)" style="color:white;opacity:1.0">
+								<i class="icon ion-email"></i>Contato
+							</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</ion-content>
+	</ion-modal-view>
+</script>

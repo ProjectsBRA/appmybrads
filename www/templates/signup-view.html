@@ -1,0 +1,37 @@
+<ion-view animation="slide-left-right" title="Criar Conta">
+	<ion-nav-buttons side="left">
+		<button class="button-header back-button buttons button-clear header-item" ng-click="goBack()">
+			<i class="icon ion-arrow-left-c"></i>
+		</button>
+	</ion-nav-buttons>
+
+	<ion-content has-header="true" scroll="true" padding="false">
+	
+		<div class="list" style="margin-top:20px" >
+			<div class="item">
+		      <h2 class="item-bold">Nome</h2>
+		      <input type="text" ng-model="signupUser.firstName" placeholder="Digite seu nome">
+		    </div>  
+			<div class="item">
+		      <h2 class="item-bold">Sobrenome</h2>
+		    <input type="text" ng-model="signupUser.lastName" placeholder="Digite seu sobrenome">
+		  </div>  
+			<div class="item">
+				<h2 class="item-bold">Email</h2>
+				<input type="email" placeholder="email@email.com" ng-model="signupUser.email">
+			</div>
+			<div class="item">
+				<h2 class="item-bold">Senha</h2>
+				<input type="password" placeholder="Digite sua senha" ng-model="signupUser.password">
+			</div>
+			<div class="item">
+				<h2 class="item-bold">Telefone</h2>
+				<input type="text" placeholder="Digite seu telefone" ng-model="signupUser.telephone" ui-us-phone-number>
+			</div>
+		  <button class="button button-block button-darkblue" ng-click="signup()">Criar Conta</button>
+	
+		</div> 
+ </ion-content>
+    <ion-footer-bar class="bar bar-footer" keyboard-attach="true">
+    </ion-footer-bar>
+</ion-view>

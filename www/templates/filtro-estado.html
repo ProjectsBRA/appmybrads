@@ -1,0 +1,28 @@
+  <ion-modal-view ng-controller="FiltroCtrl">
+      <ion-header-bar class="bar bar-interno">
+          <h1 class="title">Seleção Estado</h1>
+      </ion-header-bar>
+    <ion-content>
+
+      <div class="list card">
+          <h5 href="#" ng-click="limparEstado()">Remover seleção</h5>
+          <ion-item class="itemList" ng-repeat="estado in ::estados | orderBy:'Nome'" ng-click="itemFiltroEstado(estado)">
+              <p>{{estado.Nome}}</p>
+          </ion-item>  
+      </div>
+    </ion-content>
+
+    <ion-footer-bar class="bar bar-footer" keyboard-attach="true">
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-checkmark"
+               ng-click="selecionaEstado()">Selecionar</a>
+            </a>
+        </div>
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-ios-close-outline"
+               ng-click="closeModal(4)">Cancelar</a>
+            </a>
+        </div>
+
+    </ion-footer-bar>
+  </ion-modal-view>

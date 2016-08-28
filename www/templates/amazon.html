@@ -1,0 +1,19 @@
+<ion-view title="Amazon" cache-view="false" ng-init="buscarAnuncios">
+      <ion-content class="padding-home">
+         <h1>Angular Teste DynamoDB</h1>
+      <div class="list card" ng-show="items.length>0" ng-repeat="item in items">  
+        <div class="item" ng-click="selecionaItemMensagem(mensagem)">
+          <a>
+             <img src="{{item.photo1}}" width="100%">
+             <p>{{item.description}}</p>
+             <p>{{item.title}}</p>
+             <p>{{item.price}}</p>
+
+          </a>
+        </div>
+     </div>
+    
+      </ion-content>
+
+</ion-view>
+

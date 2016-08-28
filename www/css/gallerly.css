@@ -1,0 +1,127 @@
+html, body {
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin: 50px;
+  font-weight: 300;
+}
+
+.hide {
+  display: none;
+}
+
+#gallerly.container {
+  width: 950px;
+}
+
+#gallerly .image-viewer {
+  position: absolute;
+  width: 90%;
+}
+
+#gallerly .image-viewer .preview {
+  top: 100px !important;
+  width: 100%;
+  background-color: rgba(255,255,255,.15);
+  border: 0px solid rgba(255,255,255,.15);
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+#gallerly .image-viewer .preview img {
+  float: left;
+  height: 100%;
+  width: 100%;
+  margin-right: 3px;
+}
+
+#gallerly .image-viewer > a > img {
+  height: 50px;
+  margin-left: 5px;
+  margin-right: 0px;
+}
+
+#gallerly .image-viewer > a {
+  cursor: pointer;
+  border: 1px solid #f1f1f1;
+  width: 32%;
+  padding: 0px;
+  margin: 0px;
+  display: inline-block;
+}
+
+#gallerly .image-viewer > a:hover {
+  border: 1px solid #aaa;
+
+}
+
+#gallerly * {
+  -webkit-transition: all 0.15s ease;
+	-moz-transition: all 0.15s ease;
+	-ms-transition: all 0.15s ease;
+	-o-transition: all 0.15s ease;
+	transition: all 0.15s ease;
+}
+
+#gallerly .thumbnail.move-down {
+  top: 346px;
+}
+
+#gallerly .preview .description {
+}
+
+#gallerly .preview a {
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
+}
+
+#gallerly .preview .wrapper {
+  position: relative;
+  /*display: inline-block;*/
+}
+
+#gallerly .preview .close-preview {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+#gallerly .preview .prev {
+  position: absolute;
+  left: 6px;
+  top: 50%
+}
+
+#gallerly .preview .next {
+  position: absolute;
+  right: 6px;
+  top: 50%
+}
+
+#gallerly .preview .preview-content {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#gallerly .preview .title {
+  color: #ccc;
+}
+
+#gallerly .preview .description {
+  color: rgba(204, 204, 204, 0.57);
+}
+
+#gallerly .preview .arrow {
+  border-bottom: 10px solid #222;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  height: 0;
+  position: absolute;
+  top: -10px;
+  width: 0;
+}

@@ -1,0 +1,17 @@
+<ion-view view-title="Contatos">
+    <ion-content>
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="usuario in usuarios" type="item-text-wrap" href="#/tab/item/{{item._id}}/{{usuario._id}}/message">
+                <img ng-src="{{usuario.img_profile}}">
+                <h2>{{usuario.firstName}}</h2>
+                <p>{{usuario.lastName}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+                <ion-option-button class="button-assertive" ng-click="remove(chat)">
+                    Delete
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
+

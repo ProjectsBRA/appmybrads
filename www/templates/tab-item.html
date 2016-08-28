@@ -1,0 +1,194 @@
+<ion-view title="" cache-view="false">
+    <ion-nav-buttons side="left" ng-controller="PrincipalCtrl">
+    <h1 class="title">MyBRAds</h1>
+        <button menu-toggle="left" class="button-header bar-principal button-icon icon ion-navicon"></button>
+
+<!--         <h1 class="title"><img class="title-image" src="img/logo900.png"/></h1>
+ -->    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right" >
+        <notification-icon ng-if='totalNotificacoes>0' count='totalNotificacoes' ng-click="notificacoes()">
+          <a style="color: #2A99EA;" class="button-header button-principal button-icon icon ion-chatboxes" ng-if="isLogin==true"></a>    
+  
+        </notification-icon>    
+        <a style="color: #2A99EA;" class="button-header button-principal button-icon icon ion-search" ng-click="filtrarClassificados()"></a>
+        <a style="color: #2A99EA;" class="button-header button-principal button-icon icon ion-android-create" ng-click="abrirPublicacao()"></a>
+        <a style="color: #2A99EA;" class="button-header button-principal button-icon icon ion-person-add" ng-click="login()" ng-if="isLogin ==false"></a>
+        <script id="templates/popover.html" type="text/ng-template">
+            <ion-popover-view class="fit">
+                <ion-content>
+                    <div class="list" ng-click="closePopover()">
+                        <a class="item icon ion-refresh" ng-click="atualizarClassificados()">
+                            Atualiza Classificados
+                        </a>
+                        <a class="item icon ion-images" ng-click="filtrarClassificados(categoria)">
+                            Filtrar Classificados
+                        </a>
+                        <a class="item icon ion-close" ng-click="">
+                            Cancelar
+                        </a>
+                    </div>
+                </ion-content>
+            </ion-popover-view>
+        </script>
+
+    </ion-nav-buttons>
+
+    <ion-content class="padding-home"
+         ng-init="iniciar()"
+         id="content"
+         on-swipe-down="iniciarRefresh()">
+        <ion-refresher pulling-icon="ion-arrow-down-b" on-swipe-down="iniciarRefresh()"  on-refresh="refreshItems()">
+         <ion-spinner icon="circles"></ion-spinner>
+
+        </ion-refresher>
+
+        <ks-swiper-container initial-slide="0" speed="1000" loop="false" show-nav-buttons="false" slides-per-view="3" space-between="10" pagination-clickable="true" override-parameters="{effect: 'coverflow',coverflow: {rotate: 0,stretch: 0,depth: 0,modifier: 1,slideShadows : false}}">
+            <ks-swiper-slide class="swiper-slide" ng-repeat="categoria in ::categories" active-slide="slideAtual">
+                <div>
+                    <a href="#" ng-model="items.name" ng-click="filtrarCategoria(categoria.name, $index)">
+                        <img ng-class=" $index  ==  slideAtual ? 'img-50-opaco' :  'img-50'"  src="{{iconsCategoria[categoria.ordem-1].img}}">
+                        <p ng-class=" $index  ==  slideAtual ? 'p-50-opaco' :  'p-50'">{{categoria.name}}</p>
+                    </a>
+                </div>
+            </ks-swiper-slide>
+        </ks-swiper-container>
+        <div class="row">
+            <button class="btn-procura button-green" ng-click="filtrarClassificados()" ng-if="slideAtual !== -1 || filtro.filtrar==true">Refinar Busca</button>
+        </div>
+
+        <div class="square"  ng-repeat="item in items |orderBy:['-classificado', '-dt_create'] ">
+            <div class="content" >
+                <div class="table" >
+                    <div class="table-cell" ng-click="visualizarItem(item.id)">
+                        <a>
+                            <div class="icon-wrapper" ng-if="item.classificado ==  true">
+                                <i class="fa ion-star custom-icon">
+                                    <span class="fix-editor">&nbsp;</span>
+                                </i>
+                            </div>
+                            <img class="rs" ng-if="photoExiste(item)==false" ng-src="img/foto-naodisponivel.jpg"/>
+                            <img class="rs" ng-if="photoExiste(item)" ng-src="{{item.photo1}}"/>
+                        </a>
+                        <h4 class="verticalcut">{{item.name}}
+                        </h4>
+                        <h5 ng-if="regraPreco(item)">{{item.price | currency:"$"}}</h5>
+                        <h5 ng-if="regraPreco(item)==false && categoriaServico(item)==false">A combinar</h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+
+</ion-view>
+
+<!-- MODAL -->
+<script id="filtroSubCategoria.html" type="text/ng-template">
+  <ion-modal-view>
+      <ion-header-bar class="bar bar-interno">
+          <h1 class="title">Opções Pesquisa</h1>
+          <div class="button button-clear" ng-click="closeModal(1)"><span class="icon ion-ios-close-outline"></span></div>
+      </ion-header-bar>
+    <ion-content>
+        <div class="list card">
+          <div class="item">
+             <h2 class="item-bold">Descrição Item</h2>
+             <input type="text" placeholder="Digite a descrição" ng-model="filtro.descricao">
+          </div>
+        </div>
+        <div class="list card">
+          <div class="item">
+             <h2 class="item-bold">Valores</h2>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <label>Valor Mínimo $</label>
+                  <input class="input-value" type="text" value="{{filtro.value}}" ng-model="filtro.value"  ui-number-mask="2"  ng-change="setarValorMaximo(filtro.value)">
+              </div>
+              <div class="col-md-6">
+                  <label>Valor Máximo $</label>
+                  <input class="input-value" type="text" value="{{filtro.value2}}" ng-model="filtro.value2"  ui-number-mask="2">
+              </div>
+          </div>
+          </div>
+  
+          <div class="list card">
+
+            <div class="item">
+               <h2 class="item-bold">Informe a Categoria</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroCategoria()">
+                 <p ng-model="filtro.category">{{filtro.category}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+
+               <h2 class="item-bold">Informe a SubCategoria</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroSubCategoria()">
+                 <p ng-model="filtro.subcategory">{{filtro.subcategory}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+
+<!--
+              <h2 class="item-bold">Informe a Categoria</h2>
+              <label class="item-filter item item-input item-select">
+                  <select ng-model="filtro.category" ng-click="mostrarFiltroCategoria()"  ng-change="filtroCategoria()">
+                      <option selected></option>
+                      <option ng-repeat="category in categories">{{category.name}}</option>
+                  </select>
+              </label>
+
+              <h2 class="item-bold">Filtrar a SubCategoria</h2>
+              <label class="item-filter item item-input item-select">
+                  <select ng-model="filtro.subcategory">
+                      <option selected></option>
+                      <option ng-repeat="subcategory in subcategories">{{subcategory.name}}</option>
+                  </select>
+              </label>
+-->        
+          </div>
+        </div>
+
+        <div class="list card">
+          <div class="item">
+               <h2 class="item-bold">Informe o Estado</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroEstado()">
+                 <p ng-model="filtro.estado">{{filtro.estado}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+
+<!--
+            <label class="item item-input item-select">
+              <h2 class="item-bold">Estado</h2>
+              <select ng-model="filtro.estado">
+                <option selected></option>
+                <option ng-repeat="estado in ::estados | filterBy:'pais.Origem'">{{estado.Nome}} </option>
+               </select>
+              </label>
+-->
+
+              <h2 class="item-bold">Cidade</h2>
+            <input type="text" placeholder="Digite a cidade" ng-model="filtro.cidade">
+          </div>
+        </div>
+
+
+    </ion-content>
+    <ion-footer-bar class="bar bar-footer" keyboard-attach="true">
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-checkmark"
+               ng-click="filtrarDadosItem()">Filtrar Anúncio</a>
+            </a>
+        </div>
+        <div class="button-bar">
+            <a class="b-bar button button-green icon ion-ios-close-outline"
+               ng-click="removerFiltro()">Limpar Filtro</a>
+            </a>
+        </div>
+
+    </ion-footer-bar>
+
+  </ion-modal-view>
+</script>
+
+
+  

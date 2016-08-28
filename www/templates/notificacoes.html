@@ -1,0 +1,29 @@
+<ion-view animation="slide-left-right" title="Notificações recebidas">
+  <ion-nav-buttons side="left" ng-controller="MensagemRecebidaCtrl">
+    <button class="button-header back-button buttons button-clear header-item" ng-click="goBack()">
+      <i class="icon ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-content has-header="true" padding="true">
+    <div class="list card" ng-if="mensagens.length>0" ng-repeat="mensagem in mensagens | orderBy:'dt_create'">  
+      <div class="item" ng-click="selecionaItemMensagem(mensagem)">
+            <a>
+                <div class="a10 item-avatar">
+                   <img ng-if="photoExiste(mensagem)==false" ng-src="img/foto-naodisponivel.jpg"/>
+                   <img ng-if="photoExiste(mensagem)" ng-src="{{mensagem.photo1}}"/>
+                <p class="a-headermensagem" href="#">{{mensagem.descricao}}</p>
+                      <span class="date">{{mensagem.dt_create | date:"dd/MM/yyyy HH:mm"}}</span>
+                <p class="a-textmensagem"  href="#" ng-if="mensagem.proprio==true">{{mensagem.nome_send}} perguntou...<br />
+                {{mensagem.mensagem}}</p>
+                <p class="a-textmensagem"  href="#" ng-if="mensagem.proprio==false">{{mensagem.nome_send}} respondeu...<br />
+                {{mensagem.mensagem}}</p>
+                </div>
+            </a>
+     </div>
+   </div>
+   <div ng-if="mensagens.length==0"><h4>{{informacao}}</h4>
+   </div>
+
+
+    </ion-content>
+</ion-view>   

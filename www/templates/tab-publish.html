@@ -1,0 +1,219 @@
+<ion-view title="Publicar">
+	<ion-nav-buttons side="left" ng-controller="PublishCtrl">
+		<button class="button-header back-button buttons button-clear header-item" ng-click="goBack()">
+			<i class="icon ion-arrow-left-c"></i>
+		</button>
+	</ion-nav-buttons>
+  <ion-content class="padding">
+
+<!-- id exist user  -->
+	<div >
+		<div class="list card">
+			<div class="item">
+				<h2 class="item-bold">Título do Anúncio</h2>
+				<input type="text" placeholder="Informe o Título" ng-required="required" ng-model="publish.name">
+			</div>
+		</div>
+		<div class="list card">
+			<div class="item">
+				<h2 class="item-bold">Descrição</h2>
+				<textarea placeholder="Informe a descrição" ng-required="required" ng-model="publish.description" style="min-height:100px;"></textarea>
+			</div>
+		</div>
+
+	<div class="list card">
+			<div class="item">
+<!--				<h2 class="item-bold">Categoria</h2> -->
+
+               <h2 class="item-bold">Informe a Categoria</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroCategoria()">
+                 <p ng-model="publish.nomecategory">{{publish.nomecategory}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+
+
+<!--
+				<label class="item-filter item item-input item-select">
+					<select ng-model="publish.nomecategory" ng-required="required" ng-change="filtroCategoria()">
+						<option selected </option>
+						<option ng-repeat="category in categories">{{category.name}}</option>
+					</select>
+				</label>
+-->				
+			</div>
+		</div>
+
+		<div class="list card">
+			<div class="item">
+               <h2 class="item-bold">Informe a SubCategoria</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroSubCategoria()">
+                 <p ng-model="publish.nomeSubCategoria">{{publish.nomeSubCategoria}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+
+<!--				<h2 class="item-bold">SubCategoria</h2>
+				<label class="item-filter item item-input item-select">
+					<select ng-model="publish.nomeSubCategoria">
+						<option selected></option>
+							<option ng-repeat="subcategory in subcategories">{{subcategory.name}}</option>
+					</select>
+				</label>
+-->				
+			</div>
+		</div>
+
+
+		<div class="list card">
+			<div class="item">
+				<h2 class="item-bold">Preço $</h2>
+
+                <input type="text" placeholder="0.00" value="{{publish.price}}" ng-required="required" ng-model="publish.price"  ui-number-mask="2">
+   		    </div>
+		</div>
+
+		<div class="list card">
+			<div class="item">
+				<h2 class="item-bold">Email</h2>
+				<input type="email" placeholder="email@email.com" ng-required="required" ng-model="publish.email">
+			</div>
+		</div>
+
+		<div class="list card">
+			<div class="item">
+				<h2 class="item-bold">Telefone</h2>
+				<input type="text" placeholder="Informe telefone" ng-required="required" ng-model="publish.telephone" ui-us-phone-number>
+			</div>
+		</div>
+
+		<div class="list card">
+			<div class="item">
+               <h2 class="item-bold">Informe o Estado</h2>
+               <a class="item item-filter item-icon-right" ng-click="mostrarFiltroEstado()">
+                 <p ng-model="publish.estado">{{publish.estado}}
+                 <i class="icon ion-android-arrow-dropdown"></i></p>
+                </a> 
+				
+<!--				
+				<label class="item-filter item item-input item-select">
+					<h2 class="item-bold">Estado</h2>
+					<select ng-required="required" ng-model="publish.estado">
+						<option selected></option>
+						<option ng-repeat="estado in ::estados | filterBy:'pais.Origem'">{{estado.Nome}} </option>
+				   </select>
+				  </label>
+-->				  
+		 	    <h2 class="item-bold">Cidade</h2>
+				<input type="text" placeholder="Informe a cidade" ng-model="publish.cidade">
+   		    </div>
+		</div>
+
+	<!--	<div class="list card">
+			<div class="row">
+				<label class="label-bold">Tipo Anúncio</label>
+
+				<ion-radio  class="col-33" ng-model="publish.anuncio" ng-value="'D'">Destaque</ion-radio >
+				<ion-radio  class="col-33" ng-model="publish.anuncio" ng-value="'G'">Gratuito</ion-radio >
+			</div>
+		</div>
+    -->
+
+		<div class="list card">
+				<label class="label-bold">Anexe abaixo até 3 fotos</label>
+		</div>	
+
+
+		<input id="idImagem" type="file"  onchange="angular.element(this).scope().setFile(this)" ng-hide="true">
+
+		<div id="gallerly" class="container">
+			<div class="image-viewer">
+				<div class="preview">
+					<div class="wrapper">
+						<div class="preview-content">
+							<img id="photoAtual" degrees='angle' rotate src="{{publish.photoAtual || 'img/add-photo256v2.png'}}" ng-click="openModal(1)"/>
+						</div>
+					</div>
+				</div>
+
+
+				<a class="thumbnail" ng-if="isEdicao()==false">
+					<img id="photo1" src="{{publish.photo1.src||'img/add-photo.png'}}" ng-click="PhotoSelect(1)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br>Principal</label>
+				</a>
+				<a class="thumbnail" ng-if="isEdicao()==false">
+					<img id="photo2" src="{{publish.photo2.src || 'img/add-photo.png'}}" ng-click="PhotoSelect(2)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br> Foto 2</label>
+				</a>
+				<a class="thumbnail" ng-if="isEdicao()==false">
+					<img id="photo3" src="{{publish.photo3.src || 'img/add-photo.png'}}" ng-click="PhotoSelect(3)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br>Foto 3</label>
+				</a>
+				<a class="thumbnail" ng-if="isEdicao()">
+					<img id="photo1" src="{{publish.photo1 || 'img/add-photo.png'}}" ng-click="PhotoSelect(1)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br>Principal</label>
+				</a>
+				<a class="thumbnail" ng-if="isEdicao()">
+					<img id="photo2" src="{{publish.photo2 || 'img/add-photo.png'}}" ng-click="PhotoSelect(2)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br>Foto 2</label>
+				</a>
+				<a class="thumbnail" ng-if="isEdicao()">
+					<img id="photo3" src="{{publish.photo3 || 'img/add-photo.png'}}" ng-click="PhotoSelect(3)" data-title="Title" data-description="More Description"/>
+                    <label class="label-photo"> <br>Foto 3</label>
+				</a>
+
+				<canvas id="canvas"></canvas>
+			</div>
+		</div>
+  </div>
+	  <script id="templates/photomodal.html" type="text/ng-template">
+		  <ion-modal-view>
+			  <ion-header-bar class="bar bar-header color:'rgb(47,153,214)'">
+              <h1 class="title">Selecione:</h1>
+				  <div class="button button-clear" ng-click="modal1.hide()"><span class="icon ion-ios-close-outline"></span></div>
+			  </ion-header-bar>
+			  <ion-content class="padding">
+				  <content has-header="true" padding="true" >
+					  <div class="modal_content">
+						  <ion-radio  ng-model="choice" ng-value="'A'" ng-click="mudarImagem()">Mudar Imagem</ion-radio >
+						  <ion-radio  ng-model="choice" ng-value="'B'" ng-click="limparImagem()">Remover Imagem</ion-radio >
+					  </div>
+				  </content>
+			  </ion-content>
+		  </ion-modal-view>
+	  </script>
+
+  </ion-content>
+
+<!--
+  <ion-footer-bar class="bar bar-footer">
+	  <div class="button-bar">
+		  <a class="b-bar button icon-center ion-ios-checkmark-empty"
+			 ng-click="publishItem()"
+			 nav-direction="back">Salvar Anúncio</a>
+	  </div>
+  </ion-footer-bar>
+-->
+
+	<ion-footer-bar class="bar bar-footer" keyboard-attach="true">
+		<div class="button-bar" ng-if="isEdicao()==false">
+			<a class="b-bar button icon ion-checkmark"
+			   ng-click="publicar()"
+			   nav-direction="back">Salvar Anúncio</a>
+			</a>
+		</div>
+		<div class="button-bar" ng-if="isEdicao()">
+			<a class="b-bar button icon ion-checkmark"
+			   ng-click="editar()"
+			   nav-direction="back">Salvar Anúncio</a>
+			</a>
+		</div>
+		<div class="button-bar" ng-if="isEdicao()">
+			<a class="b-bar button icon ion-minus-circled"
+			   ng-click="excluirItem()"
+			   nav-direction="back">Excluir Anúncio</a>
+			</a>
+		</div>
+	</ion-footer-bar>
+
+
+</ion-view>
+
