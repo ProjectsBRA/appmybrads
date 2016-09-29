@@ -1,7 +1,8 @@
-angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
+angular.module('mybradsprod.controllers', ['ionic', 'underscore', 'ngCordova'])
   .controller('PrincipalCtrl', function($scope,  $ionicPopover, $state, $ionicLoading, IonicComponent, ItemConfig, 
-  	                                     $timeout, $ionicHistory, User, Utils, $ionicFilterBar, $ionicGesture, $rootScope,
-  	                                    S3ServiceAmazon,   $ionicPlatform, $ionicPopup, $interval, $ionicModal, Mensagem, _) {
+  	                                     $timeout, $ionicHistory, User, Utils, $ionicFilterBar, $ionicGesture, $rootScope, 
+  	                                    S3ServiceAmazon,   $ionicPlatform, $ionicPopup, $interval, $ionicModal, Mensagem, _,
+																				$servicoNotificacao) {
 
 	 var messageCheckTimer;
 	 var desabilitaBuscaNotificacoes = false;
@@ -109,9 +110,20 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 
 	$scope.iniciar = function(){
 	  //$scope.isLoading = true;	
+    //$rootScope.$broadcast('setToken');
  	  $scope.slideAtual = -1;
 	  isLogin = Utils.LocalStorage.getObject('user').id != undefined;
 	  $scope.user = Utils.LocalStorage.getObject('user');
+		if(isLogin){
+			//$rootScope.registrarToken();
+      //$rootScope.$broadcast('registrarToken');
+
+			//if(Utils.ValidaEhMobile()==true){
+			//	alert('confirmado mobile');
+			  $servicoNotificacao.registro();			
+			//}
+		}
+
 	  desabilitaBuscaNotificacoes = false;
 	  $scope.slideAtual = -1;
       if(Utils.LocalStorage.getObject('categoriaAtual').slide!==undefined){
@@ -2092,7 +2104,7 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 
 
   }])
-  .controller('MensagemCtrl', function($scope, $state, Utils, IonicComponent, Mensagem, ItemConfig,  PopupTemplate,  User, $timeout, $interval, $q, $ionicScrollDelegate, $ionicHistory, S3ServiceAmazon, $rootScope) {
+  .controller('MensagemCtrl', function($scope, $state, Utils, IonicComponent, Mensagem, ItemConfig,  PopupTemplate,  User, $timeout, $interval, $q, $ionicScrollDelegate, $ionicHistory, S3ServiceAmazon, $rootScope, $servicoNotificacao) {
 	$scope.user = Utils.LocalStorage.getObject('user');
 	$scope.user.pic_receive = 'img/Person-receive.png';
 	$scope.user.pic_send = 'img/Person-send.png';
@@ -2372,12 +2384,12 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 			item : $scope.item.id,
 			mensagem : $scope.input.message,
 			usuario_send : $scope.user.id,
-            nome_send: $scope.user.firstName + " " + $scope.user.lastName,
-            usuario_receive: idUser,
-            nome_receive : nomeUser,
-            message_read:  false,
-            usuario   :  $scope.user.id
-        }
+      nome_send: $scope.user.firstName + " " + $scope.user.lastName,
+      usuario_receive: idUser,
+      nome_receive : nomeUser,
+      message_read:  false,
+      usuario   :  $scope.user.id
+     }
 		$scope.input.message = "";
         Utils.LocalStorage.setObject('mensagem', mensagemAtual);
 		Mensagem.enviarMensagem(mensagemAtual)
@@ -2385,6 +2397,7 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 		  	if(dados==400){
 		  		alert("Não foi possível enviar a mensagem.");
 		  	}else{
+					$scope.enviarNotificacao(mensagemAtual);
 		  	  mensagemAtual = Utils.LocalStorage.getObject('mensagem');
 		  	  $scope.mensagens.push(mensagemAtual);
 		  	}
@@ -2398,6 +2411,22 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 		  });
 	  }
 	};
+
+	$scope.enviarNotificacao = function(Mensagem){
+		var Dados = {
+			"usersend" : '',
+			"nameuser": '',
+			"userreceive": '',
+			"mensagem": '',
+			"item" : ''
+		}
+    Dados.usersend = Mensagem.usuario_send;
+		Dados.nameuser = Mensagem.nome_send;
+		Dados.userreceive = Mensagem.usuario_receive;
+		Dados.mensagem = Mensagem.mensagem;
+		Dados.item = Mensagem.item;
+		$servicoNotificacao.notificar(Dados);
+	}
 
 	$scope.notificacao = function(mensagem){
       var dados = {
@@ -2865,9 +2894,8 @@ angular.module('mybradsprod.controllers', ['ionic', 'underscore'])
 
     $scope.initialize =function(){
       var iniciado = false; 
- 	  //$rootScope.$broadcast('registrarToken');
-      //$rootScope.$broadcast('setToken');
-
+ 	    $rootScope.$broadcast('registrarToken');
+      $rootScope.$broadcast('setToken');
     }
 
 

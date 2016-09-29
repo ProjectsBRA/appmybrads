@@ -8,9 +8,9 @@
 angular.module('mybradsprod', ['ionic', 'mybradsprod.controllers', 'mybradsprod.services', 'underscore',  'angular-notification-icons',
                            'monospaced.elastic', 'angularMoment','jett.ionic.filter.bar', 'angular.filter', 'ui.utils.masks', 'angular-md5',
                            'mybradsprod.templatesComponent', 'ngCordova', 'ksSwiper', 'tabSlideBox', 'ngCordova', 'irontec.simpleChat','fcsa-number'])
-.run(function($ionicPlatform, $cordovaStatusbar, $cordovaSplashscreen, $ionicPopup, $ionicHistory) {
+.run(function($ionicPlatform, $cordovaStatusbar, $cordovaSplashscreen, $ionicPopup, $ionicHistory, $rootScope, $servicoNotificacao) {
 
-
+  //$rootScope.$broadcast('registrarToken');
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,6 +18,7 @@ angular.module('mybradsprod', ['ionic', 'mybradsprod.controllers', 'mybradsprod.
     // setTimeout(function() {
     //     $cordovaSplashscreen.hide()
     // }, 3000);
+
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -211,29 +212,9 @@ angular.module('mybradsprod', ['ionic', 'mybradsprod.controllers', 'mybradsprod.
   ])
 
 
-
-// .constant('S3URL','mybradsprod.s3-website-us-east-2.amazonaws.com')
-// .constant('Amazon', 
-//    { baseUrl : 'https://s3.amazonaws.com/mybradsprod', //'https://mybradsprod.s3.amazonaws.com',
-//      baseDynamoDB :  'sa-east-1:167819122117',
-//      regiao : 'sa-east-1',
-//      key : 'AKIAJU4A3Y4E27MDK6SA',
-//      keySecret :  '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',
-//      bucket: 'mybradsprod'
-//    }
-//   )
-
+/* 
  .constant('S3URL','mybradsprod.s3-website-us-east-2.amazonaws.com')
- .constant('S3Email', 
-   { region : 'us-west-2',
-     email  : 'contato@mybrads.com',
-     ses    : 'ses-smtp-user.mybrads',
-     key    : 'AKIAIS3F3CFNVYG2X76A',
-     keySecret: 'AqSQA8+EtiQRVjUJIqy6QhfWGTvh0DsQYb3hyxkejYof',
-     server : 'http://179.184.44.83:1010'
-   }
- )
- .constant('Amazon', 
+ .constant('Amazon',
     { baseUrl : 'https://s3.amazonaws.com/mybradsprod', //'https://mybradsprod.s3.amazonaws.com',
       baseDynamoDB :  'us-west-2:167819122117',
       regiao : 'us-west-2',
@@ -243,16 +224,35 @@ angular.module('mybradsprod', ['ionic', 'mybradsprod.controllers', 'mybradsprod.
     }
    )
 
-// .constant('S3URL','mybrads.s3-website-sa-east-1.amazonaws.com')
-// .constant('Amazon', 
-//    { baseUrl : 'mybrads.s3-website-sa-east-1.amazonaws.com',
-//      baseDynamoDB :  'sa-east-1:098474835986',
-//      regiao : 'sa-east-1',
-//      key : 'AKIAIK4HAXEBFAC5JJHQ',
-//      keySecret :  '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',
-//      bucket: 'mybrads'
-//    }
-//   )
+ .constant('S3Email', 
+   { region : 'us-west-2',
+     email  : 'contato@mybrads.com',
+     ses    : 'ses-smtp-user.mybrads',
+     key    : 'AKIAIS3F3CFNVYG2X76A',
+     keySecret: 'AqSQA8+EtiQRVjUJIqy6QhfWGTvh0DsQYb3hyxkejYof',
+     server : 'http://179.184.44.83:1010'
+   }
+ )
+ */
+ .constant('S3Email', 
+   { region : 'us-west-2',
+     email  : 'contato@mybrads.com',
+     ses    : 'ses-smtp-user.mybrads',
+     key    : 'AKIAIS3F3CFNVYG2X76A',
+     keySecret: 'AqSQA8+EtiQRVjUJIqy6QhfWGTvh0DsQYb3hyxkejYof',
+     server : 'http://179.184.44.83:1010'
+   }
+ )
+ .constant('S3URL','mybrads.s3-website-sa-east-1.amazonaws.com')
+ .constant('Amazon', 
+    { baseUrl : 'https://s3-sa-east-1.amazonaws.com/mybrads',
+      baseDynamoDB :  'sa-east-1:098474835986',
+      regiao : 'sa-east-1',
+      key : 'AKIAIK4HAXEBFAC5JJHQ',
+      keySecret :  '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',
+      bucket: 'mybrads'
+    }
+   )
 
 
 .config(function($stateProvider, $urlRouterProvider,   $ionicConfigProvider, $ionicFilterBarConfigProvider) {
@@ -286,6 +286,10 @@ angular.module('mybradsprod', ['ionic', 'mybradsprod.controllers', 'mybradsprod.
          }
       }
 
+    })
+    .state('app.notificacao', {
+       url: "/",
+       controller: 'NotificacaoCtrl'
     })
     .state('app.item', {
       url: '/item',

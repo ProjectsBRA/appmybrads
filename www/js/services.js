@@ -635,6 +635,18 @@ angular.module('mybradsprod.services', [])
       }else
         return false;
     },
+    ValidaEhMobile : function(){
+      if(ionic.Platform.is("browser")==true){
+         return false
+      }else{
+         if(device.isVirtual === true){
+            return false
+         }else{
+            return ionic.Platform.isWebView() || ionic.Platform.isIPad() || ionic.Platform.isIOS() || ionic.Platform.isAndroid() || ionic.Platform.isWindowsPhone();
+         }
+      };
+
+    },
     montaQueryAmazon : function(condicao, tipoCampo, valorFiltro, valorFiltro2){
       var item = {};
       if(tipoCampo=='S'){
